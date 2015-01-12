@@ -5,7 +5,7 @@ Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
-    path = "/Users/air/Documents/Computer Graphics/CGCourseWork/doge4.bmp";
+    path = "/Users/air/Documents/Computer Graphics/CGCourseWork/doge2.jpg";
     loadImage(path);
 
     ui->setupUi(this);
@@ -31,12 +31,12 @@ void Widget::paintEvent(QPaintEvent *) {
 void Widget::medianFiltration() {
 
     vector<mQColor> pixels(frameWidth * frameHeight);
-    mQColor item;
+    //mQColor item;
 
     int frameOffsetByX = frameWidth / 2;
     int frameOffsetByY = frameHeight / 2;
 
-    /*
+
     for (int k = 0; k < intensity; k++) {
 
         for (int x = 0; x < image.width() - frameWidth + 1; x++) {
@@ -45,7 +45,9 @@ void Widget::medianFiltration() {
                 int currentPixel = 0;
                 for (int i = 0; i < frameWidth; i++) {
                     for (int j = 0; j < frameHeight; j++) {
-                        pixels[currentPixel++] = QColor(image.pixel(QPoint(x + i, y + j)));
+                        pixels[currentPixel].color = QColor(prevImage.pixel(QPoint(x + i, y + j)));
+                        pixels[currentPixel].num = currentPixel;
+                        currentPixel++;
                     }
                 }
 
@@ -53,9 +55,10 @@ void Widget::medianFiltration() {
                 image.setPixel(x + frameOffsetByX, y + frameOffsetByY, newPixel.rgb());
             }
         }
+        prevImage = image;
 
     }
-    */
+
     /*
     for (int k = 0; k < intensity; k++) {
 
@@ -77,26 +80,28 @@ void Widget::medianFiltration() {
 
     }
     */
+    /*
+    for (int k = 0; k < intensity; k++) {
 
-    for (int i = 0; i < intensity; i++) {
+        for (int x = 0; x < image.width() - 2; x++) {
+            for (int y = 0; y < image.height() - 2; y++) {
 
-            for (int x = 1; x < image.width(); x++) {
-                for (int y = 1; y < image.height(); y++) {
-
-                    int pos = 0;
-                    for (int i = 0; i < 3; i++)
-                        for (int j = 0; j < 3; j++) {
-                             pixels[pos].color = QColor(image.pixel(QPoint(x + i, y + j)));
-                             pixels[pos].num = pos;
-                             pos++;
-                        }
-                    QColor avg = getMedian(pixels);
-                    image.setPixel(x, y, avg.rgb());
+                int pos = 0;
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        pixels[pos].color = QColor(prevImage.pixel(QPoint(x + i, y + j)));
+                        pixels[pos].num = pos;
+                        pos++;
+                    }
                 }
+                 QColor avg = getMedian(pixels);
+                 image.setPixel(x + 1, y + 1, avg.rgb());
             }
-
         }
+        prevImage = image;
 
+    }
+    */
 }
 
 qreal Widget::getLightness(QColor pixel) {
@@ -144,16 +149,16 @@ QColor Widget::getMedian(vector<mQColor> &pixels) {
     QColor median;
     vector<mLightness> lights(amount);
 
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < amount; i++) {
         lights[i].lightness = pixels[i].color.lightness();
         lights[i].num = pixels[i].num;
     }
 
     sort(lights.begin(), lights.end(), lightnessComparator);
 
-    int middle = (amount % 2) ? (amount / 2 + 1) : (amount / 2);
+    int middle = amount / 2 + 1;
 
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < amount; i++) {
         if (pixels[i].num == lights[middle].num) {
             median = pixels[i].color;
         }
@@ -166,6 +171,7 @@ void Widget::loadImage(string path) {
     image.load(path.c_str());
     image.scaled(image.width(), image.height());
     originalImage = image;
+    prevImage = image;
 }
 
 void Widget::on_applyFilterButton_clicked() {
@@ -200,5 +206,6 @@ void Widget::on_frameHeightBox_valueChanged() {
 
 void Widget::on_revertImageButton_clicked() {
     image = originalImage;
+    prevImage = originalImage;
     update();
 }

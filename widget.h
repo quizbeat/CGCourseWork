@@ -47,6 +47,7 @@ private slots:
 private:
     string path;
     QImage image;
+    QImage prevImage;
     QImage originalImage;
 
     int intensity;
