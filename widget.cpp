@@ -31,7 +31,6 @@ void Widget::paintEvent(QPaintEvent *) {
 void Widget::medianFiltration() {
 
     vector<mQColor> pixels(frameWidth * frameHeight);
-    //mQColor item;
 
     int frameOffsetByX = frameWidth / 2;
     int frameOffsetByY = frameHeight / 2;
@@ -59,49 +58,6 @@ void Widget::medianFiltration() {
 
     }
 
-    /*
-    for (int k = 0; k < intensity; k++) {
-
-        for (int x = 0; x < image.width() - 2; x++) {
-            for (int y = 0; y < image.height() - 2; y++) {
-
-                //int currentPixel = 0;
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        pixels.push_back(QColor(image.pixel(QPoint(x + i, y + j))));
-                    }
-                }
-
-                QColor newPixel = getMedian(pixels);
-                image.setPixel(x + 1, y + 1, newPixel.rgb());
-                pixels.clear();
-            }
-        }
-
-    }
-    */
-    /*
-    for (int k = 0; k < intensity; k++) {
-
-        for (int x = 0; x < image.width() - 2; x++) {
-            for (int y = 0; y < image.height() - 2; y++) {
-
-                int pos = 0;
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        pixels[pos].color = QColor(prevImage.pixel(QPoint(x + i, y + j)));
-                        pixels[pos].num = pos;
-                        pos++;
-                    }
-                }
-                 QColor avg = getMedian(pixels);
-                 image.setPixel(x + 1, y + 1, avg.rgb());
-            }
-        }
-        prevImage = image;
-
-    }
-    */
 }
 
 qreal Widget::getLightness(QColor pixel) {
@@ -109,42 +65,6 @@ qreal Widget::getLightness(QColor pixel) {
 }
 
 QColor Widget::getMedian(vector<mQColor> &pixels) {
-    /*
-    QColor median;
-
-    int amount = pixels.size();
-    int middle = amount / 2 + 1;
-
-    int medianR = 0;
-    int medianG = 0;
-    int medianB = 0;
-
-    vector<int> pixelsR(amount);
-    for (int i = 0; i < amount; i++) {
-        pixelsR[i] = pixels[i].red();
-    }
-    sort(pixelsR.begin(), pixelsR.end());
-    medianR = pixelsR[middle];
-
-    vector<int> pixelsG(amount);
-    for (int i = 0; i < amount; i++) {
-        pixelsG[i] = pixels[i].green();
-    }
-    sort(pixelsG.begin(), pixelsG.end());
-    medianG = pixelsG[middle];
-
-    vector<int> pixelsB(amount);
-    for (int i = 0; i < amount; i++) {
-        pixelsB[i] = pixels[i].blue();
-    }
-    sort(pixelsB.begin(), pixelsB.end());
-    medianB = pixelsB[middle];
-
-    median = qRgb(medianG, medianR, medianB);
-
-    return median;
-    */
-
     int amount = pixels.size();
     QColor median;
     vector<mLightness> lights(amount);
@@ -179,7 +99,7 @@ void Widget::on_applyFilterButton_clicked() {
         QMessageBox error;
         error.setText("Amount of pixels in the frame must be odd.");
         error.setStandardButtons(QMessageBox::Ok);
-        if(error.exec() == QMessageBox::Ok){
+        if (error.exec() == QMessageBox::Ok){
             error.close();
             return;
         }
