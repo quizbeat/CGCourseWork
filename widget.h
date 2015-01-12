@@ -55,6 +55,7 @@ private:
 
     void medianFiltration();
     QColor getMedian(vector<mQColor> &pixels);
+    qreal getLightness(QColor pixel);
     void revertToOriginal();
 
     Ui::Widget *ui;
