@@ -1,12 +1,10 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-#include <QWidget>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QGraphicsPixmapItem>
 #include <QDebug>
- #include <QMessageBox>
+#include <QWidget>
+#include <QPainter>
+#include <QMessageBox>
 #include <algorithm>
 
 using namespace std;
@@ -22,7 +20,7 @@ typedef struct {
 } mLightness;
 
 namespace Ui {
-class Widget;
+    class Widget;
 }
 
 class Widget : public QWidget
