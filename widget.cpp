@@ -5,8 +5,8 @@ Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
-    path = "/Users/air/Documents/Computer Graphics/CGCourseWork/doge2.jpg";
-    loadImage(path);
+    path = "/Users/air/Documents/Computer Graphics/CGCourseWork/taj_mahal.jpg";
+    loadImage();
 
     ui->setupUi(this);
 
@@ -60,10 +60,6 @@ void Widget::medianFiltration() {
 
 }
 
-qreal Widget::getLightness(QColor pixel) {
-    return 0.21 * pixel.red() + 0.72 * pixel.green() + 0.07 * pixel.blue();
-}
-
 QColor Widget::getMedian(vector<mQColor> &pixels) {
     int amount = pixels.size();
     QColor median;
@@ -87,7 +83,7 @@ QColor Widget::getMedian(vector<mQColor> &pixels) {
     return median;
 }
 
-void Widget::loadImage(string path) {
+void Widget::loadImage() {
     image.load(path.c_str());
     image.scaled(image.width(), image.height());
     originalImage = image;
@@ -127,5 +123,28 @@ void Widget::on_frameHeightBox_valueChanged() {
 void Widget::on_revertImageButton_clicked() {
     image = originalImage;
     prevImage = originalImage;
+    update();
+}
+
+void Widget::on_selectImageBox_currentIndexChanged(int img) {
+    if (img == 0) {
+        path = "/Users/air/Documents/Computer Graphics/CGCourseWork/taj_mahal.jpg";
+    }
+    else if (img == 1) {
+        path = "/Users/air/Documents/Computer Graphics/CGCourseWork/doge.jpg";
+    }
+    else if (img == 2) {
+        path = "/Users/air/Documents/Computer Graphics/CGCourseWork/dog.png";
+    }
+    else if (img == 3) {
+        path = "/Users/air/Documents/Computer Graphics/CGCourseWork/flower.bmp";
+    }
+    else if (img == 4) {
+        path = "/Users/air/Documents/Computer Graphics/CGCourseWork/coins.png";
+    }
+    else if (img == 5) {
+        path = "/Users/air/Documents/Computer Graphics/CGCourseWork/people2.jpg";
+    }
+    loadImage();
     update();
 }

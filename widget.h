@@ -28,7 +28,7 @@ class Widget : public QWidget
     Q_OBJECT
 
 public:
-    void loadImage(string path);
+    void loadImage();
     virtual void paintEvent(QPaintEvent *);
     explicit Widget(QWidget *parent = 0);
     ~Widget();
@@ -41,6 +41,7 @@ private slots:
     void on_filterIntensityBox_valueChanged();
     void on_frameWidthBox_valueChanged();
     void on_frameHeightBox_valueChanged();
+    void on_selectImageBox_currentIndexChanged(int index);
 
 private:
     string path;
@@ -54,7 +55,6 @@ private:
 
     void medianFiltration();
     QColor getMedian(vector<mQColor> &pixels);
-    qreal getLightness(QColor pixel);
     void revertToOriginal();
 
     Ui::Widget *ui;
